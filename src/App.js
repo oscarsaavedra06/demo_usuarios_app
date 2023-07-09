@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const API_URL = 'http://localhost:80/users';
 
+const API_URL = "/api/";
+//const API_URL = "http://localhost/users";
+console.log(API_URL)
 const App = () => {
   const [users, setUsers] = useState([]);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [age, setAge] = useState('');
   const [editingUserId, setEditingUserId] = useState(null);
 
   useEffect(() => {
@@ -27,15 +30,15 @@ const App = () => {
     if (!name || !email) return;
 
     try {
-      const response = await fetch(API_URL, {
+      await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, age }),
       });
-      const newUser = await response.json();
-      setUsers([...users, newUser]);
+      await fetchUsers()
       setName('');
       setEmail('');
+      setAge('');
     } catch (error) {
       console.error('Error creating user:', error);
     }
@@ -45,18 +48,16 @@ const App = () => {
     if (!name || !email) return;
 
     try {
-      const response = await fetch(`${API_URL}/${editingUserId}`, {
+     await fetch(`${API_URL}/${editingUserId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email, age }),
       });
-      const updatedUser = await response.json();
-      const updatedUsers = users.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user
-      );
-      setUsers(updatedUsers);
+     
+      await fetchUsers()
       setName('');
       setEmail('');
+      setAge('');
       setEditingUserId(null);
     } catch (error) {
       console.error('Error updating user:', error);
@@ -68,8 +69,7 @@ const App = () => {
       await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
       });
-      const updatedUsers = users.filter((user) => user._id !== id);
-      setUsers(updatedUsers);
+      await fetchUsers()
     } catch (error) {
       console.error('Error deleting user:', error);
     }
@@ -78,12 +78,14 @@ const App = () => {
   const editUser = (user) => {
     setName(user.name);
     setEmail(user.email);
+    setAge(user.age);
     setEditingUserId(user._id);
   };
 
   const cancelEdit = () => {
     setName('');
     setEmail('');
+    setAge('');
     setEditingUserId(null);
   };
 
@@ -102,7 +104,7 @@ const App = () => {
         }}
       >
         <div className="mb-3">
-          <label className="form-label">Nombre</label>
+          <label className="form-label">Nombre Completo</label>
           <input
             type="text"
             className="form-control"
@@ -118,6 +120,16 @@ const App = () => {
             className="form-control"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label">Edad</label>
+          <input
+            type="text"
+            className="form-control"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
           />
         </div>
 
@@ -152,7 +164,7 @@ const App = () => {
             className="list-group-item d-flex justify-content-between align-items-center"
           >
             <div>
-              <span className="fw-bold">{user.name}</span> - {user.email}
+              <span className="fw-bold">{user.name}</span> - {user.email}- {user.age}
             </div>
             <div>
               <button
