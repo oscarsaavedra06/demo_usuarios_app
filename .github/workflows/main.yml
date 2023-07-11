@@ -41,8 +41,8 @@ jobs:
       - name: DigitalOcean kubeconfig credentials
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 f74e3210-45c3-4484-8bd6-bb177dc2d973
       - name: delete deploy
-        run: kubectl delete -f .\deployment.yml --ignore-not-found=true
+        run: kubectl delete -f $GITHUB_WORKSPACE/deployment.yml --ignore-not-found=true
       - name: create deploy
-        run: kubectl create -f .\deployment.yml
+        run: kubectl create -f $GITHUB_WORKSPACE/deployment.yml
       - name: Create service
         run: kubectl apply -f $GITHUB_WORKSPACE/service.yml
