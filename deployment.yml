@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+      tier: frontend
+      track: stable
+  template:
+    metadata:
+      labels:
+         app: users
+         tier: frontend
+         track: stable
+    spec:
+      containers:
+      - name: users-webapp
+        image: oscarsaavedra12/demousuariosapp:latest
+...        
