@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const API_URL = "/api/";
-//const API_URL = "http://localhost/users";
+
 console.log(API_URL)
 const App = () => {
   const [users, setUsers] = useState([]);
