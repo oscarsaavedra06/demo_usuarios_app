@@ -23,7 +23,7 @@ jobs:
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       - name: build docker image
-        run: docker build . --file Dockerfile --tag oscarsaavedra12/usuariosapp:latest
+        run: docker build . --file Dockerfile --tag oscarsaavedra12/demousuariosapp:latest
       - name: docker hub push
         run: docker push ${{secrets.DOCKER_USER}}/usuariosapp
       
